@@ -13,7 +13,7 @@ class CommonTextFormField extends StatefulWidget {
       this.obscureText,
       this.suffixIcon,
       this.maxLines,
-      this.radius = 15.0})
+      this.radius = 15.0,  this.backGroundColor = AppColors.tertiaryColor})
       : super(key: key);
   final String hintText;
   final TextEditingController? controller;
@@ -24,6 +24,7 @@ class CommonTextFormField extends StatefulWidget {
   final bool? obscureText;
   final Widget? suffixIcon;
   final double radius;
+  final Color backGroundColor;
 
   @override
   State<CommonTextFormField> createState() => _CommonTextFormFieldState();
@@ -35,7 +36,7 @@ class _CommonTextFormFieldState extends State<CommonTextFormField> {
     return Container(
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(widget.radius),
-          color: AppColors.tertiaryColor),
+          color: widget.backGroundColor),
       margin: const EdgeInsets.all(10),
       child: TextFormField(
         maxLines: widget.maxLines,

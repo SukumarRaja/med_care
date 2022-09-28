@@ -55,12 +55,14 @@ class LoginPage extends StatelessWidget {
                       padding: EdgeInsets.all(8.0),
                       // child: AuthCard(),
                       child: Form(
+                        key: AuthController.to.loginFormKey,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
                               CommonTextFormField(
                                 hintText: "Email",
                                 maxLines: 1,
+                                controller: AuthController.to.email,
                                 obscureText: false,
                                 validator: (data) {
                                   if (data!.isEmpty || data == "") {
@@ -72,13 +74,15 @@ class LoginPage extends StatelessWidget {
                               CommonTextFormField(
                                 hintText: "Password",
                                 obscureText: true,
+                                controller: AuthController.to.password,
                                 maxLines: 1,
                                 validator: (data) {
                                   if (data!.isEmpty || data == "") {
                                     return 'Please Enter Password';
-                                  } else if (data.length < 8) {
-                                    return 'Password Should Be 8';
                                   }
+                                  // else if (data.length < 8) {
+                                  //   return 'Password Should Be 8';
+                                  // }
                                   return null;
                                 },
                               ),
@@ -94,12 +98,20 @@ class LoginPage extends StatelessWidget {
                               SizedBox(
                                 height: 20,
                               ),
-                              CommonButton(
-                                text: "Login",
-                                onPressed: () {
-                                  Get.to(HomeMain());
-                                },
-                              ),
+                              Obx(() => AuthController.to.loginLoading == true
+                                  ? CircularProgressIndicator(
+                                      color: Colors.white,
+                                    )
+                                  : CommonButton(
+                                      text: "Login",
+                                      onPressed: () {
+                                        if (AuthController
+                                            .to.loginFormKey.currentState!
+                                            .validate()) {
+                                          AuthController.to.login();
+                                        }
+                                      },
+                                    )),
                               SizedBox(
                                 height: 20,
                               ),
@@ -110,9 +122,7 @@ class LoginPage extends StatelessWidget {
                                   child: CommonText(
                                     text: "Don't have an account Signup ?",
                                   )),
-                              Obx(() => AuthController.to.loginLoading == true
-                                  ? Center(child: CircularProgressIndicator())
-                                  : const SizedBox()),
+
                             ],
                           ),
                         ),

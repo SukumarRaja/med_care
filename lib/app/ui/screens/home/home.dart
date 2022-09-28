@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:med_care/app/ui/screens/appointment/doctor_appointment.dart';
-import 'package:med_care/app/ui/screens/doctor/department.dart';
+import '../../../controller/main/main.dart';
 import '../../themes/colors.dart';
 import '../../widgets/app_drawer.dart';
 import '../../widgets/common_icon_button.dart';
 import '../../widgets/common_text.dart';
 import '../appointment/appointment.dart';
-import '../appointment/show_appointment.dart';
-import '../doctor/detail.dart';
-import '../doctor/list.dart';
+import '../appointment/today_appointment.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);
@@ -61,12 +58,14 @@ class HomePage extends StatelessWidget {
                       text: "Today Appointment",
                       icon: Icons.calendar_today,
                       onPressed: () {
-                        Get.to(()=>ShowAppointment());
+                        Get.to(() => TodayAppointment());
                       }),
                   buildCard(
                       text: "Appointment Request",
                       icon: Icons.add_circle_outline,
-                      onPressed: () {}),
+                      onPressed: () {
+                        Get.to(()=>Appointment());
+                      }),
                   buildCard(
                       text: "Doctor Search",
                       icon: Icons.search,
@@ -76,7 +75,11 @@ class HomePage extends StatelessWidget {
                       icon: Icons.file_copy,
                       onPressed: () {}),
                   buildCard(
-                      text: "Profile", icon: Icons.person, onPressed: () {}),
+                      text: "Profile",
+                      icon: Icons.person,
+                      onPressed: () {
+                        MainController.to.changeIndex = 2;
+                      }),
                   buildCard(
                       text: "Settings", icon: Icons.settings, onPressed: () {}),
                 ],

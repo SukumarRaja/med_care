@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../themes/colors.dart';
 import 'common_text.dart';
 
-
 class CommonButtonForLogin extends StatelessWidget {
   const CommonButtonForLogin(
       {Key? key, required this.text, required this.onPressed})
@@ -26,19 +25,21 @@ class CommonButtonForLogin extends StatelessWidget {
         ),
         child: Center(
             child: CommonText(
-              text: text,
-              color: AppColors.primaryColor,
-            )),
+          text: text,
+          color: AppColors.primaryColor,
+        )),
       ),
     );
   }
 }
 
 class CommonButton extends StatelessWidget {
-  const CommonButton({Key? key, required this.text, required this.onPressed})
+  const CommonButton(
+      {Key? key, required this.text, required this.onPressed, this.width})
       : super(key: key);
   final String text;
   final Function() onPressed;
+  final double? width;
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +49,7 @@ class CommonButton extends StatelessWidget {
       onTap: onPressed,
       child: Container(
         height: media.height * 0.06,
-        width: media.width,
+        width: width ?? media.width,
         margin: const EdgeInsets.only(right: 15.0, left: 15.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
@@ -56,12 +57,10 @@ class CommonButton extends StatelessWidget {
         ),
         child: Center(
             child: CommonText(
-              text: text,
-              color: AppColors.secondaryColor,
-            )),
+          text: text,
+          color: AppColors.secondaryColor,
+        )),
       ),
     );
   }
 }
-
-

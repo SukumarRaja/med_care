@@ -8,7 +8,6 @@ import '../../ui/screens/home/home_main.dart';
 import '../../ui/screens/login/login.dart';
 import '../../ui/widgets/common_print.dart';
 
-
 class AuthController extends GetxController {
   static AuthController get to => Get.put(AuthController());
 
@@ -40,7 +39,7 @@ class AuthController extends GetxController {
     _logoutLoading.value = value;
   }
 
-  final _loginDetails = Data().obs;
+  final _loginDetails = LoginRes().obs;
 
   get loginDetails => _loginDetails.value;
 
@@ -50,9 +49,9 @@ class AuthController extends GetxController {
 
   loginCheck() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    var token = preferences.getString('token');
+    var token = preferences.getString('user_id');
     if (kDebugMode) {
-      print("token $token");
+      print("userId $token");
     }
     if (token != null && token.isNotEmpty) {
       return true;
@@ -101,25 +100,31 @@ class AuthController extends GetxController {
     loginLoading = true;
     try {
       Map<String, dynamic> bodyData = {
-        "emailMobileUsername": email.text.trimRight(),
-        "password": password.text.trimRight()
+        "email": email.text.trimRight(),
+        "password": password.text.trimRight(),
+        "group": "Patient",
       };
       LoginRes res = await repository.login(bodyData: bodyData);
-      if (res.status == "success") {
+      if (res.message == "successful") {
         loginLoading = false;
-        Map storedData = {"token": "${res.data!.token}"};
+        Map storedData = {
+          "user_id": "${res.userId}",
+          "ion_id": "${res.ionId}",
+          "idToken": "${res.idToken}",
+          "hospital_id": "${res.hospitalId}",
+        };
         storeLocalDevice(body: storedData);
-        commonPrint(status: "${res.status}", msg: "${res.message}");
+        commonPrint(status: "Success", msg: "${res.message}");
         Get.off(() => const HomeMain());
-        if (res.data == null) {
-          commonPrint(status: "${res.status}", msg: "But No Data");
-        } else if (res.data != null) {
-          commonPrint(status: "${res.status}", msg: "${res.data}");
-          loginDetails = res.data;
+        if (res == "") {
+          commonPrint(status: "Success", msg: "But No Data");
+        } else if (res != "") {
+          commonPrint(status: "Success", msg: "${res}");
+          loginDetails = res;
         }
       } else {
         loginLoading = false;
-        commonPrint(status: "${res.status}", msg: "${res.message}");
+        commonPrint(status: "Error", msg: "${res.message}");
       }
     } catch (e) {
       loginLoading = false;
@@ -131,60 +136,60 @@ class AuthController extends GetxController {
 
   clearToken() async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
-    preferences.remove('token');
+    preferences.remove('user_id');
     await Get.off(() => const LoginPage());
     // commonSnackBar(title: "Success", msg: "Logout Successfully");
   }
 
-  logout() async {
-    logoutLoading = true;
-    try {
-      LoginRes res = await repository.logout();
-      if (res.status == "success") {
-        logoutLoading = false;
-        await clearToken();
-        commonPrint(status: "${res.status}", msg: "${res.data}");
-      } else {
-        logoutLoading = false;
-        commonPrint(status: "${res.status}", msg: "${res.data}");
-      }
-    } catch (e) {
-      logoutLoading = false;
-      commonPrint(status: "Failure", msg: "Error from server on logout $e");
-    }
-  }
+// logout() async {
+//   logoutLoading = true;
+//   try {
+//     LoginRes res = await repository.logout();
+//     if (res.status == "success") {
+//       logoutLoading = false;
+//       await clearToken();
+//       commonPrint(status: "${res.status}", msg: "${res.data}");
+//     } else {
+//       logoutLoading = false;
+//       commonPrint(status: "${res.status}", msg: "${res.data}");
+//     }
+//   } catch (e) {
+//     logoutLoading = false;
+//     commonPrint(status: "Failure", msg: "Error from server on logout $e");
+//   }
+// }
 
-  register() async {
-    loginLoading = true;
-    try {
-      Map<String, dynamic> bodyData = {
-        "firstName": name.text.trimRight(),
-        "email": signUpEmail.text.trimRight(),
-        "password": signUpPassword.text.trimRight()
-      };
-
-      LoginRes res = await repository.register(bodyData: bodyData);
-      if (res.status == "success") {
-        loginLoading = false;
-        // Map storedData = {"token": "${res.data!.token}"};
-        // storeLocalDevice(body: storedData);
-        // commonPrint(status: "${res.status}", msg: "${res.message}");
-        // Get.off(() => const HomeMain());
-        if (res.data == null) {
-          commonPrint(status: "${res.status}", msg: "But No Data");
-        } else if (res.data != null) {
-          commonPrint(status: "${res.status}", msg: "${res.data}");
-          loginDetails = res.data;
-        }
-      } else {
-        loginLoading = false;
-        commonPrint(status: "${res.status}", msg: "${res.message}");
-      }
-    } catch (e) {
-      loginLoading = false;
-      if (kDebugMode) {
-        print("Error from server on register");
-      }
-    }
-  }
+// register() async {
+//   loginLoading = true;
+//   try {
+//     Map<String, dynamic> bodyData = {
+//       "firstName": name.text.trimRight(),
+//       "email": signUpEmail.text.trimRight(),
+//       "password": signUpPassword.text.trimRight()
+//     };
+//
+//     LoginRes res = await repository.register(bodyData: bodyData);
+//     if (res.status == "success") {
+//       loginLoading = false;
+//       // Map storedData = {"token": "${res.data!.token}"};
+//       // storeLocalDevice(body: storedData);
+//       // commonPrint(status: "${res.status}", msg: "${res.message}");
+//       // Get.off(() => const HomeMain());
+//       if (res.data == null) {
+//         commonPrint(status: "${res.status}", msg: "But No Data");
+//       } else if (res.data != null) {
+//         commonPrint(status: "${res.status}", msg: "${res.data}");
+//         loginDetails = res.data;
+//       }
+//     } else {
+//       loginLoading = false;
+//       commonPrint(status: "${res.status}", msg: "${res.message}");
+//     }
+//   } catch (e) {
+//     loginLoading = false;
+//     if (kDebugMode) {
+//       print("Error from server on register");
+//     }
+//   }
+// }
 }

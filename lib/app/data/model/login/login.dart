@@ -1,43 +1,39 @@
 class LoginRes {
   LoginRes({
-    this.status,
     this.message,
-    this.data,
+    this.idToken,
+    this.ionId,
+    this.userId,
+    this.expiresIn,
+    this.error,
+    this.hospitalId,
   });
 
-  dynamic status;
   dynamic message;
-  Data? data;
+  dynamic idToken;
+  dynamic ionId;
+  dynamic userId;
+  dynamic expiresIn;
+  dynamic error;
+  dynamic hospitalId;
 
   factory LoginRes.fromMap(Map<String, dynamic> json) => LoginRes(
-        status: json["status"] == null ? null : json["status"],
         message: json["message"] == null ? null : json["message"],
-        data: json["data"] == null ? null : Data.fromMap(json["data"]),
+        idToken: json["idToken"] == null ? null : json["idToken"],
+        ionId: json["ion_id"] == null ? null : json["ion_id"],
+        userId: json["user_id"] == null ? null : json["user_id"],
+        expiresIn: json["expiresIn"] == null ? null : json["expiresIn"],
+        error: json["error"],
+        hospitalId: json["hospital_id"] == null ? null : json["hospital_id"],
       );
 
   Map<String, dynamic> toMap() => {
-        "status": status == null ? null : status,
         "message": message == null ? null : message,
-        "data": data == null ? null : data!.toMap(),
-      };
-}
-
-class Data {
-  Data({
-    this.email,
-    this.token,
-  });
-
-  dynamic email;
-  dynamic token;
-
-  factory Data.fromMap(Map<String, dynamic> json) => Data(
-        email: json["email"] == null ? null : json["email"],
-        token: json["token"] == null ? null : json["token"],
-      );
-
-  Map<String, dynamic> toMap() => {
-        "email": email == null ? null : email,
-        "token": token == null ? null : token,
+        "idToken": idToken == null ? null : idToken,
+        "ion_id": ionId == null ? null : ionId,
+        "user_id": userId == null ? null : userId,
+        "expiresIn": expiresIn == null ? null : expiresIn,
+        "error": error,
+        "hospital_id": hospitalId == null ? null : hospitalId,
       };
 }

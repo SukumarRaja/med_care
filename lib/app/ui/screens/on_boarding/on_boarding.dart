@@ -18,14 +18,14 @@ class OnBoardingPage extends StatelessWidget {
             decoration: getPageDecoration(),
           ),
           PageViewModel(
-            title: 'Hairdressing',
+            title: 'Patient Caring',
             body:
                 'The app embraces users with a tour of its Salon and gives an inadequate explanation of the features and abilities',
             image: buildImage(imgName: "on_board_two"),
             decoration: getPageDecoration(),
           ),
           PageViewModel(
-            title: 'Multiple Payment Options',
+            title: 'Professional Doctors',
             body: 'For enhanced reading experience',
             image: buildImage(imgName: "on_board_three"),
             decoration: getPageDecoration(),

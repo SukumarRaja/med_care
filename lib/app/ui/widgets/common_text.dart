@@ -12,7 +12,8 @@ class CommonText extends StatelessWidget {
       this.fontWeight,
       this.decoration,
       this.decorationThickness,
-      this.textAlign})
+      this.textAlign,
+      this.overFlow})
       : super(key: key);
   final String? text;
   final double? size;
@@ -21,12 +22,14 @@ class CommonText extends StatelessWidget {
   final TextDecoration? decoration;
   final double? decorationThickness;
   final TextAlign? textAlign;
+  final TextOverflow? overFlow;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text!,
       textAlign: textAlign,
+      overflow: overFlow,
       style: TextStyle(
         fontSize: size,
         color: color,
